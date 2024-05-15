@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Profiles</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+      }
+      .container {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .search-input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+      }
+      .profile {
+        margin-bottom: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      .profile h2 {
+        margin-top: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" class="container"></div>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+       // UserProfile component   
+       function UserProfile({ user }) {
+        return (
+          <div className="profile">
+            <h2>{user.name}</h2>
+            <p>Email: {user.email}</p>
+            <p>Phone: {user.phone}</p>
+          </div>
+        );
+      }
+
+      // App component
+      const App = () => {
+        const [searchQuery, setSearchQuery] = React.useState('');
+        const [filteredUsers, setFilteredUsers] = React.useState(USERS);
+
+        const handleSearchChange = (event) => {
+          setSearchQuery(event.target.value);
+          setFilteredUsers(USERS.filter((user) =>
+            user.name.toLowerCase().includes(searchQuery.toLowerCase()) 
+          ));
+        };
+
+        return (
+          <div>
+            <input
+              className="search-input"
+              type="text"
+              placeholder="Search by name..."
+              value={searchQuery}
+              onChange={handleSearchChange}
+            />
+            {filteredUsers.map((user, index) => (
+              <UserProfile key={index} user={user} />
+            ))} 
+          </div>
+        );
+      };
+
+      // Sample user data
+      const USERS = [
+        {
+          name: "John Doe",
+          email: "john@example.com",
+          phone: "123-456-7890",
+        },
+        {
+          name: "Jane Smith",
+          email: "jane@example.com",
+          phone: "987-654-3210",
+          },
+        {
+          name: "Tom Johnson",
+          email: "tom@example.com",
+          phone: "555-555-5555",
+        },
+      ];
+
+      // Rendering the App component
+      const reactRoot = ReactDOM.createRoot(document.getElementById("root"));
+      reactRoot.render(<App />);
+    </script>
+  </body>
+</html>
